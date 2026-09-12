@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block openapp %}<strong>ENJOY!</strong>{% endblock %}
+{% block content %}
+<section class="intro">
+  <div class="sticker-row" aria-label="Task board tags">
+    <span class="sticker sticker-coral">Task board</span>
+    <span class="sticker sticker-blue">Live updates</span>
+    <span class="sticker sticker-green">Simple workflow</span>
+  </div>
+  <p class="eyebrow">Small Django + HTMX test project</p>
+  <h1 class="text-reveal">Tasks that stay moving.</h1>
+</section>
+<form class="quick-create" method="post" enctype="multipart/form-data" action="{% url 'tasks:create' %}" hx-post="{% url 'tasks:create' %}" hx-target="#task-list" hx-swap="afterbegin">
+  {% csrf_token %}
+  {{ form.title }}
+  {{ form.description }}
+  <label class="file-picker">{{ form.attachment }}<span class="file-name">No file selected</span></label>
+  <button class="button" type="submit">Create task</button>
+</form>
+<form class="filters" hx-get="{% url 'tasks:partial' %}" hx-target="#task-list" hx-swap="innerHTML" hx-trigger="keyup changed delay:300ms from:#task-search, change from:#task-status">
+  <input id="task-search" type="search" name="q" placeholder="Search tasks...">
+  <select id="task-status" name="status">
+    <option value="all">All tasks</option>
+    <option value="open">Open</option>
+    <option value="completed">Completed</option>
+  </select>
+</form>
+<div id="task-list">
+  {% include "tasks/_task_list.html" %}
+</div>
+{% endblock %}

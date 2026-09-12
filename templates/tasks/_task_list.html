@@ -1,0 +1,5 @@
+{% for task in tasks %}
+  {% include "tasks/_task_card.html" %}
+{% empty %}
+  <p class="empty">No tasks found.</p>
+{% endfor %}

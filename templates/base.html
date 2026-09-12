@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskHub</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <main class="container">
+    <header class="header">
+      <a class="brand" href="{% url 'tasks:home' %}">TaskHub</a>
+      <nav class="nav">
+        {% block openapp %}<a class="button" href="{% url 'tasks:list' %}">Open app</a>{% endblock %}
+        
+      </nav>
+    </header>
+    {% block content %}{% endblock %}
+  </main>
+  <script>
+    document.addEventListener("change", (event) => {
+      if (event.target.matches("input[type=file]")) {
+        const fileName = event.target.closest(".file-picker")?.querySelector(".file-name");
+        if (fileName) {
+          fileName.textContent = event.target.files[0]?.name || "No file selected";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

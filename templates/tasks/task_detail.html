@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-panel">
+  <p class="eyebrow">Task detail</p>
+  <h1>{{ task.title }}</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button" type="submit">Save changes</button>
+  </form>
+  {% if attachment_url %}<p><a href="{{ attachment_url }}">Open attachment</a></p>{% endif %}
+</section>
+{% endblock %}

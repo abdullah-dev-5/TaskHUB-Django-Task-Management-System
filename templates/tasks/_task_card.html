@@ -1,0 +1,18 @@
+<article class="task-card {% if task.completed %}is-complete{% endif %}" id="task-{{ task.id }}">
+  <div>
+    <h3><a href="{% url 'tasks:detail' task.pk %}">{{ task.title }}</a></h3>
+    {% if task.description %}<p>{{ task.description }}</p>{% endif %}
+    <div class="task-meta">
+      <span class="status-tag {% if task.completed %}status-done{% else %}status-open{% endif %}">
+        {% if task.completed %}Completed{% else %}Open{% endif %}
+      </span>
+      {% if task.attachment_name %}<span class="attachment-tag">File attached</span>{% endif %}
+    </div>
+  </div>
+  <div class="task-actions">
+    <button hx-post="{% url 'tasks:toggle' task.pk %}" hx-target="closest article" hx-swap="outerHTML">
+      {% if task.completed %}Reopen{% else %}Complete{% endif %}
+    </button>
+    <button class="danger" hx-delete="{% url 'tasks:delete' task.pk %}" hx-target="closest article" hx-swap="outerHTML">Delete</button>
+  </div>
+</article>

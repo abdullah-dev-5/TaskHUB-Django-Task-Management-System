@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-panel">
+  <p class="eyebrow">Task creation</p>
+  <h1>New task</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button" type="submit">Create task</button>
+  </form>
+</section>
+{% endblock %}
