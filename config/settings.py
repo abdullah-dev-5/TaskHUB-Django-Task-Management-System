@@ -58,9 +58,28 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-database_url = os.getenv("DATABASE_URL")
-if database_url:
-    parsed_database_url = urlparse(database_url)
+db_name = os.getenv("DB_NAME") or os.getenv("database")
+db_user = os.getenv("DB_USER") or os.getenv("user")
+db_password = os.getenv("DB_PASSWORD") or os.getenv("password")
+db_host = os.getenv("DB_HOST") or os.getenv("host")
+db_port = os.getenv("DB_PORT") or os.getenv("port")
+
+if db_name:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": db_name,
+            "USER": db_user or "postgres",
+            "PASSWORD": db_password or "",
+            "HOST": db_host or "localhost",
+            "PORT": db_port or "5432",
+            "OPTIONS": {
+                "sslmode": os.getenv("DB_SSLMODE", "require"),
+            },
+        }
+    }
+elif os.getenv("DATABASE_URL"):
+    parsed_database_url = urlparse(os.environ["DATABASE_URL"])
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -69,17 +88,9 @@ if database_url:
             "PASSWORD": parsed_database_url.password or "",
             "HOST": parsed_database_url.hostname or "",
             "PORT": str(parsed_database_url.port or 5432),
-        }
-    }
-elif os.getenv("DB_NAME"):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ["DB_NAME"],
-            "USER": os.getenv("DB_USER", "postgres"),
-            "PASSWORD": os.getenv("DB_PASSWORD", ""),
-            "HOST": os.getenv("DB_HOST", "localhost"),
-            "PORT": os.getenv("DB_PORT", "5432"),
+            "OPTIONS": {
+                "sslmode": "require"
+            },
         }
     }
 else:

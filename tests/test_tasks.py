@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -20,6 +21,15 @@ class TaskViewsTests(TestCase):
         self.assertRedirects(response, reverse("tasks:list"))
         self.assertTrue(Task.objects.filter(title="Learn HTMX").exists())
 
+    @patch.dict(
+        "os.environ",
+        {
+            "SUPABASE_URL": "",
+            "SUPABASE_KEY": "",
+            "SUPABASE_BUCKET": "",
+            "SUPABASE_PUBLIC_URL": "",
+        },
+    )
     def test_task_attachment_uses_local_storage_without_supabase(self):
         upload = SimpleUploadedFile("notes.txt", b"TaskHub upload test", content_type="text/plain")
         response = self.client.post(

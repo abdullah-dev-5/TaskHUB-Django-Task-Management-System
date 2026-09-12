@@ -26,7 +26,7 @@ Set `DJANGO_SECRET_KEY` and a Supabase PostgreSQL connection in `.env`. You can 
 DATABASE_URL=postgresql://postgres:your-password@db.your-project.supabase.co:5432/postgres
 ```
 
-Or use the individual `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT` variables. `DATABASE_URL` takes priority. When neither PostgreSQL configuration is present, the application uses SQLite as a local development fallback.
+Or use the individual `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT` variables. The individual `DB_*` variables take priority when both configurations exist. When neither PostgreSQL configuration is present, the application uses SQLite as a local development fallback.
 
 For Vercel, configure `DATABASE_URL` or the PostgreSQL variables as project environment variables so task data is persistent across deployments and serverless instances:
 
