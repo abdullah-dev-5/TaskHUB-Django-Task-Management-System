@@ -20,17 +20,23 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Set `DJANGO_SECRET_KEY` and the `DB_*` values in `.env`. Setting `DB_NAME` activates PostgreSQL:
+Set `DJANGO_SECRET_KEY` and a Supabase PostgreSQL connection in `.env`. You can use one connection string:
+
+```text
+DATABASE_URL=postgresql://postgres:your-password@db.your-project.supabase.co:5432/postgres
+```
+
+Or use the individual `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT` variables. `DATABASE_URL` takes priority. When neither PostgreSQL configuration is present, the application uses SQLite as a local development fallback.
+
+For Vercel, configure `DATABASE_URL` or the PostgreSQL variables as project environment variables so task data is persistent across deployments and serverless instances:
 
 ```text
 DB_NAME=taskhub
 DB_USER=postgres
-DB_PASSWORD=your-local-password
-DB_HOST=localhost
+DB_PASSWORD=your-database-password
+DB_HOST=your-postgres-host
 DB_PORT=5432
 ```
-
-The database variables also work with the host, port, database name, user, and password supplied by Supabase. With `DB_NAME` empty, the project uses SQLite as a temporary learning fallback.
 
 ## Supabase Storage
 
